@@ -1,0 +1,55 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "org.dimsen.grpc";
+
+package greeting;
+
+// The greeting service definition
+service GreetingService {
+  // Sends a greeting
+  rpc SayHello (HelloRequest) returns (HelloReply) {}
+  
+  // Sends a personalized greeting with mood
+  rpc SayHelloWithMood (HelloRequestWithMood) returns (HelloReply) {}
+  
+  // Streams multiple greetings
+  rpc SayHelloStream (HelloRequest) returns (stream HelloReply) {}
+
+  // Client streaming - collects multiple names and sends one response
+  rpc CollectNames (stream HelloRequest) returns (HelloReply) {}
+
+  // Bidirectional streaming - chat-like interaction
+  rpc Chat (stream ChatMessage) returns (stream ChatMessage) {}
+}
+
+// The request message containing the user's name
+message HelloRequest {
+  string name = 1;
+}
+
+// The request message containing name and mood
+message HelloRequestWithMood {
+  string name = 1;
+  Mood mood = 2;
+}
+
+// The response message containing the greeting
+message HelloReply {
+  string message = 1;
+}
+
+// Chat message for bidirectional streaming
+message ChatMessage {
+  string sender = 1;
+  string content = 2;
+  int64 timestamp = 3;
+}
+
+// Enum for different moods
+enum Mood {
+  HAPPY = 0;
+  SAD = 1;
+  EXCITED = 2;
+  ANGRY = 3;
+} 
